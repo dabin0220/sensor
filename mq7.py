@@ -42,7 +42,7 @@ try:
         else:
             GPIO.output(buzzer_pin, GPIO.LOW)
         
-        time.sleep(0.2)
+        time.sleep(1)
 
 except KeyboardInterrupt:
     pass
