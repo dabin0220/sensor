@@ -1,6 +1,9 @@
 import smbus          # import SMBus module of I2C
 from time import sleep # import sleep for delay
 import math           # 수학 연산을 위한 math 모듈 임포트
+import RPi.GPIO as GPIO
+
+GPIO.setwarnings(False)
 
 # MPU6050 레지스터와 그 주소 정의
 PWR_MGMT_1   = 0x6B
@@ -14,6 +17,10 @@ ACCEL_ZOUT_H = 0x3F
 GYRO_XOUT_H  = 0x43
 GYRO_YOUT_H  = 0x45
 GYRO_ZOUT_H  = 0x47
+
+LED_PIN = 23
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED_PIN, GPIO.OUT)
 
 bus = smbus.SMBus(1)   # I2C 버스 1 사용 (구형 보드는 smbus.SMBus(0) 사용)
 Device_Address = 0x68  # MPU6050 장치 주소
@@ -115,6 +122,9 @@ try:
         
         if shock_detected:
             print("<<<<< 충격 발생 >>>>>")
+            GPIO.output(LED_PIN, GPIO.HIGH)
+        else:
+            GPIO.output(LED_PIN, GPIO.LOW)
         sleep(0.1)  # 작은 지연 추가
 
 except KeyboardInterrupt:
